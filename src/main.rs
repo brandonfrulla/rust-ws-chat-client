@@ -7,7 +7,7 @@ use actix_web::{web, http, App, HttpServer};
 use diesel::{
     prelude::*,
     r2d2::{self, ConnectionManager}
-}
+};
 mod db;
 mod models;
 mod routes;
@@ -54,6 +54,12 @@ async fn main() -> std::io::Result<()> {
             .service(routes::get_rooms)
             .service(Files::new("/", "./static"))
     })
+    .workers(2)
+    .bind((server_addr, server_port))?
+    .run();
+println!("Server running at: http://{server_addr}:{server_port}/");
+app.await
+
 
 
 }
